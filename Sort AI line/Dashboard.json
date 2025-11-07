@@ -1,0 +1,718 @@
+[
+    {
+        "id": "af213ba3fe4288df",
+        "type": "tab",
+        "label": "AI - Odczyt",
+        "disabled": false,
+        "info": "Dashboard do odczytu danych z kamery AI"
+    },
+    {
+        "id": "a49522366be9909f",
+        "type": "mqtt in",
+        "z": "af213ba3fe4288df",
+        "name": "Odczyt z kamery AI (do UI)",
+        "topic": "i/cam",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "fa600c20.8a9c9",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 170,
+        "y": 240,
+        "wires": [
+            [
+                "afcafb9d1fdae6fb",
+                "6bcddc3449488075",
+                "aa6adff20f0e50dd"
+            ]
+        ]
+    },
+    {
+        "id": "9da354f6114b1cd9",
+        "type": "function",
+        "z": "af213ba3fe4288df",
+        "name": "Zbierz historię (max 50)",
+        "func": "// 1. Pobierz starą historię lub utwórz nową\nlet history = flow.get('history') || [];\n\n// 2. Dodaj nową wiadomość (payload z i/cam/result)\nhistory.push(msg.payload);\n\n// 3. Utrzymaj maksymalnie n wpisów\nwhile (history.length > 50) {\n    history.shift(); // Usuń najstarszy element\n}\n\n// 4. Zapisz historię\nflow.set('history', history);\n\n// 5. Licznik inkrementacja\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 300,
+        "wires": [
+            [
+                "d4341f04dc39720c"
+            ]
+        ]
+    },
+    {
+        "id": "afcafb9d1fdae6fb",
+        "type": "function",
+        "z": "af213ba3fe4288df",
+        "name": "Wyciągnij opis",
+        "func": "msg.payload = msg.payload.description;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 180,
+        "wires": [
+            [
+                "400df43eec7727b2"
+            ]
+        ]
+    },
+    {
+        "id": "400df43eec7727b2",
+        "type": "ui_text",
+        "z": "af213ba3fe4288df",
+        "group": "84813fd7614a32a7",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Ostatni odczyt:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 620,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "6bcddc3449488075",
+        "type": "function",
+        "z": "af213ba3fe4288df",
+        "name": "Konwertuj pewność na %",
+        "func": "msg.payload = (parseFloat(msg.payload.confidence)*100).toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 240,
+        "wires": [
+            [
+                "64359ae5261ff44b"
+            ]
+        ]
+    },
+    {
+        "id": "64359ae5261ff44b",
+        "type": "ui_gauge",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "group": "84813fd7614a32a7",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Pewność",
+        "label": "%",
+        "format": "{{msg.payload}}",
+        "min": "50",
+        "max": "100",
+        "colors": [
+            "#d13f00",
+            "#f0d105",
+            "#0ed100"
+        ],
+        "seg1": "70",
+        "seg2": "85",
+        "diff": false,
+        "className": "",
+        "x": 640,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "aa6adff20f0e50dd",
+        "type": "function",
+        "z": "af213ba3fe4288df",
+        "name": "Wyciągnij obraz (data)",
+        "func": "msg.payload = msg.payload.data;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 420,
+        "wires": [
+            [
+                "e73eb2bc15a48e8c"
+            ]
+        ]
+    },
+    {
+        "id": "e73eb2bc15a48e8c",
+        "type": "ui_template",
+        "z": "af213ba3fe4288df",
+        "group": "84813fd7614a32a7",
+        "name": "Podgląd z kamery",
+        "order": 2,
+        "width": "6",
+        "height": "5",
+        "format": "<img width=\"100%\" src=\"{{msg.payload}}\">",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 650,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "895f4a5f07e99066",
+        "type": "ui_switch",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "label": "Tryb Ręczny",
+        "tooltip": "",
+        "group": "d37467da22138ce0",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 170,
+        "y": 60,
+        "wires": [
+            [
+                "f240e96a492b4281",
+                "26078e6cf60c08d7",
+                "ebbcfdec0a57c30e"
+            ]
+        ]
+    },
+    {
+        "id": "f240e96a492b4281",
+        "type": "change",
+        "z": "af213ba3fe4288df",
+        "name": "Zapisz tryb (flow)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "manualMode",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d4341f04dc39720c",
+        "type": "function",
+        "z": "af213ba3fe4288df",
+        "name": "Pobierz liczbę z historii",
+        "func": "let history = flow.get('history') || [];\nmsg.payload = history.length;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 300,
+        "wires": [
+            [
+                "ad09db0e03e129be"
+            ]
+        ]
+    },
+    {
+        "id": "ad09db0e03e129be",
+        "type": "ui_text",
+        "z": "af213ba3fe4288df",
+        "group": "b8235030fee11ba5",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Liczba w historii:",
+        "format": "{{msg.payload}} / 50",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 890,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "39bb17f039a44eca",
+        "type": "ui_button",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "group": "b8235030fee11ba5",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Wyczyść historię",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#630000",
+        "className": "",
+        "icon": "delete_sweep",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "f2efc1f7526d9441"
+            ]
+        ]
+    },
+    {
+        "id": "f2efc1f7526d9441",
+        "type": "function",
+        "z": "af213ba3fe4288df",
+        "name": "Wyczyść dane",
+        "func": "// 1. Wyczyść poprzednie wpisy\nflow.set('history', []);\n\n// 2. Resetujemy licznik\nmsg.payload = 0;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 120,
+        "wires": [
+            [
+                "ad09db0e03e129be"
+            ]
+        ]
+    },
+    {
+        "id": "f42f447672c6a2c8",
+        "type": "function",
+        "z": "af213ba3fe4288df",
+        "name": "Przygotuj Raport HTML",
+        "func": "let history = flow.get('history') || [];\n\nlet html = `\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Raport Sortowania</title>\n  <style>\n    body { font-family: sans-serif; }\n    table { border-collapse: collapse; width: 100%; }\n    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; vertical-align: middle; }\n    th { background-color: #f2f2f2; }\n    img { max-width: 200px; height: auto; }\n    tr:nth-child(even) { background-color: #f9f9f9; }\n  </style>\n</head>\n<body>\n  <h1>Raport Linii Sortującej AI</h1>\n  <p>Wygenerowano: ${new Date().toLocaleString('pl-PL')}</p>\n  <table>\n    <tr>\n      <th>Timestamp</th>\n      <th>Obraz</th>\n      <th>Opis</th>\n      <th>Pewność</th>\n      <th>Kolor ID</th>\n      <th>Zatoka</th>\n    </tr>\n`;\n\n// Od najnowszego na górze\nfor (let i = history.length - 1; i >= 0; i--) {\n    const item = history[i];\n    let confidence = (parseFloat(item.confidence) * 100).toFixed(2);\n    \n    html += `\n    <tr>\n      <td>${item.ts}</td>\n      <td><img src=\"${item.data}\"></td>\n      <td>${item.description}</td>\n      <td>${confidence}%</td>\n      <td>${item.color}</td>\n      <td>${item.bay}</td>\n    </tr>\n    `;\n}\n\nhtml += `\n  </table>\n</body>\n</html>\n`;\n\nmsg.payload = html;\nmsg.filename = `raport-sortowanie-${new Date().toISOString().slice(0, 16).replace('T','_').replace(':','-')}.html`;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 480,
+        "wires": [
+            [
+                "a70777d7918e1e0e"
+            ]
+        ]
+    },
+    {
+        "id": "a70777d7918e1e0e",
+        "type": "ui_template",
+        "z": "af213ba3fe4288df",
+        "group": "b8235030fee11ba5",
+        "name": "",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "format": "<script>\n(function(scope) {\n  scope.$watch('msg', function(msg) {\n    if (msg) {\n      var payload = msg.payload;\n      var filename = msg.filename || \"raport.html\";\n      \n      // Zmieniony typ MIME na text/html\n      var element = document.createElement('a');\n      element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(payload));\n      element.setAttribute('download', filename);\n\n      element.style.display = 'none';\n      document.body.appendChild(element);\n\n      element.click();\n\n      document.body.removeChild(element);\n    }\n  });\n})(scope);\n</script>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 630,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "26078e6cf60c08d7",
+        "type": "mqtt out",
+        "z": "af213ba3fe4288df",
+        "name": "Wyślij status trybu manualnego",
+        "topic": "i/cam/manual_mode",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "fa600c20.8a9c9",
+        "x": 430,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "a7beb2b092c34374",
+        "type": "ui_button",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "group": "71f20c04e0fd8004",
+        "order": 1,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Zatoka 1",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 170,
+        "y": 640,
+        "wires": [
+            [
+                "ca6741e7c8a34d67"
+            ]
+        ]
+    },
+    {
+        "id": "5eb29e31a5c6887c",
+        "type": "ui_button",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "group": "71f20c04e0fd8004",
+        "order": 2,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Zatoka 2",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "2",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 170,
+        "y": 680,
+        "wires": [
+            [
+                "ca6741e7c8a34d67"
+            ]
+        ]
+    },
+    {
+        "id": "f2053f0713de2cfa",
+        "type": "ui_button",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "group": "71f20c04e0fd8004",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Zatoka 3",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "3",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 170,
+        "y": 720,
+        "wires": [
+            [
+                "ca6741e7c8a34d67"
+            ]
+        ]
+    },
+    {
+        "id": "6716f02d92636a30",
+        "type": "ui_button",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "group": "71f20c04e0fd8004",
+        "order": 4,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Zatoka 4",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "4",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 160,
+        "y": 760,
+        "wires": [
+            [
+                "ca6741e7c8a34d67"
+            ]
+        ]
+    },
+    {
+        "id": "ca6741e7c8a34d67",
+        "type": "mqtt out",
+        "z": "af213ba3fe4288df",
+        "name": "Wyślij decyzję manualną",
+        "topic": "i/cam/decyzja",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "fa600c20.8a9c9",
+        "x": 430,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "42084af4004526b2",
+        "type": "ui_ui_control",
+        "z": "af213ba3fe4288df",
+        "name": "Kontrola UI",
+        "events": "all",
+        "x": 160,
+        "y": 180,
+        "wires": [
+            [
+                "60f96c3b88365195"
+            ]
+        ]
+    },
+    {
+        "id": "60f96c3b88365195",
+        "type": "change",
+        "z": "af213ba3fe4288df",
+        "name": "Pobierz stan manualMode",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "manualMode",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 180,
+        "wires": [
+            [
+                "ebbcfdec0a57c30e"
+            ]
+        ]
+    },
+    {
+        "id": "ebbcfdec0a57c30e",
+        "type": "function",
+        "z": "af213ba3fe4288df",
+        "name": "Ukryj/Pokaż grupę",
+        "func": "// ID grupy 'Decyzja Manualna'\nconst groupId = \"71f20c04e0fd8004\"; \n\nlet showHideCommand = {};\n\nif (msg.payload === true) {\n    // Pokaż grupę\n    showHideCommand = {\n        group: {\n            show: [groupId]\n        }\n    };\n} else {\n    // Ukryj grupę\n    showHideCommand = {\n        group: {\n            hide: [groupId]\n        }\n    };\n}\n\nif (msg.event === 'change' || msg.event === 'connect' || msg.event === 'change_tab') {\n    return { payload: showHideCommand };    \n} else if (msg.hasOwnProperty('payload')) { \n    return { payload: showHideCommand };\n} \n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 100,
+        "wires": [
+            [
+                "09d3559a148ff466"
+            ]
+        ]
+    },
+    {
+        "id": "09d3559a148ff466",
+        "type": "ui_ui_control",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "events": "all",
+        "x": 820,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b18f2a7881afc3b0",
+        "type": "mqtt in",
+        "z": "af213ba3fe4288df",
+        "name": "Ostateczny Wynik z TXT",
+        "topic": "i/cam/result",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "fa600c20.8a9c9",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 190,
+        "y": 300,
+        "wires": [
+            [
+                "9da354f6114b1cd9"
+            ]
+        ]
+    },
+    {
+        "id": "ebb5d04e011a7030",
+        "type": "ui_button",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "group": "b8235030fee11ba5",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Generuj Raport (HTML)",
+        "tooltip": "Pobiera plik HTML z historią ostatnich 50 odczytów. Przy pierwszym użyciu odblokuj pop-up w przeglądarce.",
+        "color": "",
+        "bgcolor": "#0094ce",
+        "className": "",
+        "icon": "file_download",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 190,
+        "y": 480,
+        "wires": [
+            [
+                "f42f447672c6a2c8"
+            ]
+        ]
+    },
+    {
+        "id": "5f976acca91fdbdc",
+        "type": "ui_button",
+        "z": "af213ba3fe4288df",
+        "name": "",
+        "group": "71f20c04e0fd8004",
+        "order": 4,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Odrzuć",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "5",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 160,
+        "y": 800,
+        "wires": [
+            [
+                "ca6741e7c8a34d67"
+            ]
+        ]
+    },
+    {
+        "id": "fa600c20.8a9c9",
+        "type": "mqtt-broker",
+        "name": "Lokalny Broker TXT",
+        "broker": "localhost",
+        "port": "2883",
+        "clientid": "Node-RED-AI-Display",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true
+    },
+    {
+        "id": "84813fd7614a32a7",
+        "type": "ui_group",
+        "name": "Wyniki Analizy AI",
+        "tab": "",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d37467da22138ce0",
+        "type": "ui_group",
+        "name": "Sterowanie",
+        "tab": "",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b8235030fee11ba5",
+        "type": "ui_group",
+        "name": "RAPORT",
+        "tab": "",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "71f20c04e0fd8004",
+        "type": "ui_group",
+        "name": "Decyzja Manualna",
+        "tab": "",
+        "order": 4,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    }
+]
