@@ -1,0 +1,488 @@
+[
+    {
+        "id": "eeef58bbbdff6c8e",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "28d9cb1fc96bf1c8",
+        "type": "ui_slider",
+        "z": "eeef58bbbdff6c8e",
+        "name": "",
+        "label": "Ruch w pionie",
+        "tooltip": "",
+        "group": "872ad4cc77976ba2",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "0",
+        "max": "1900",
+        "step": 1,
+        "className": "",
+        "x": 1180,
+        "y": 180,
+        "wires": [
+            [
+                "42d37338f6acd2ca"
+            ]
+        ]
+    },
+    {
+        "id": "42d37338f6acd2ca",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "Zamień slider return value w json",
+        "func": "// Read the slider value\nlet sliderValue = msg.payload;\n\n// Build your JSON object\nlet output = {\n    GripperRequest: false,\n    VerticalMovementRequest: sliderValue,\n    HorizontalMovementRequest: -1,\n    RotationRequest: -1,\n    Reset: false,\n};\n\n// Return it as the new payload\nmsg.payload = output;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 180,
+        "wires": [
+            [
+                "d7bf6e1de69c51a4"
+            ]
+        ]
+    },
+    {
+        "id": "286d9668c1ad48fb",
+        "type": "ui_slider",
+        "z": "eeef58bbbdff6c8e",
+        "name": "",
+        "label": "Ruch w poziomie",
+        "tooltip": "",
+        "group": "872ad4cc77976ba2",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "0",
+        "max": "65",
+        "step": 1,
+        "className": "",
+        "x": 1190,
+        "y": 220,
+        "wires": [
+            [
+                "68e8a5416fc30a63"
+            ]
+        ]
+    },
+    {
+        "id": "68e8a5416fc30a63",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "zamień slider return value w json",
+        "func": "// Read the slider value\nlet sliderValue = msg.payload;\n\n// Build your JSON object\nlet output = {\n    GripperRequest: false,\n    VerticalMovementRequest: -1,\n    HorizontalMovementRequest: sliderValue,\n    RotationRequest: -1,\n    Reset: false,\n};\n\n// Return it as the new payload\nmsg.payload = output;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 220,
+        "wires": [
+            [
+                "d7bf6e1de69c51a4"
+            ]
+        ]
+    },
+    {
+        "id": "3f621966e096fd45",
+        "type": "ui_slider",
+        "z": "eeef58bbbdff6c8e",
+        "name": "",
+        "label": "Obrót",
+        "tooltip": "",
+        "group": "872ad4cc77976ba2",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "1900",
+        "step": 1,
+        "className": "",
+        "x": 1230,
+        "y": 260,
+        "wires": [
+            [
+                "c317520dbe8a90ef"
+            ]
+        ]
+    },
+    {
+        "id": "c317520dbe8a90ef",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "zamień slider return value w json",
+        "func": "// Read the slider value\nlet sliderValue = msg.payload;\n\n// Build your JSON object\nlet output = {\n    GripperRequest: false,\n    VerticalMovementRequest: -1,\n    HorizontalMovementRequest: -1,\n    RotationRequest: sliderValue,\n    Reset: false,\n};\n\n// Return it as the new payload\nmsg.payload = output;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 260,
+        "wires": [
+            [
+                "d7bf6e1de69c51a4"
+            ]
+        ]
+    },
+    {
+        "id": "81d02b30a41f8828",
+        "type": "mqtt in",
+        "z": "eeef58bbbdff6c8e",
+        "name": "Dostań domyślne wartości z pythona",
+        "topic": "InitializeValues",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "af1ec4295b7cd019",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 500,
+        "y": 240,
+        "wires": [
+            [
+                "8e1f5b4945077ace",
+                "2ff8af909f83d870",
+                "2a701652c3c273aa",
+                "dc0ae6ab8ba7fae2"
+            ]
+        ]
+    },
+    {
+        "id": "8e1f5b4945077ace",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "Wybierz element json'a, którym modyfikujesz guzik",
+        "func": "let data = msg.payload;\nmsg.payload = data.VerticalMovementRequest;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 180,
+        "wires": [
+            [
+                "28d9cb1fc96bf1c8"
+            ]
+        ]
+    },
+    {
+        "id": "2ff8af909f83d870",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "Wybierz element json'a, którym modyfikujesz guzik",
+        "func": "let data = msg.payload;\nmsg.payload = data.HorizontalMovementRequest;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 220,
+        "wires": [
+            [
+                "286d9668c1ad48fb"
+            ]
+        ]
+    },
+    {
+        "id": "2a701652c3c273aa",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "Wybierz element json'a, którym modyfikujesz guzik",
+        "func": "let data = msg.payload;\nmsg.payload = data.RotationRequest;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 260,
+        "wires": [
+            [
+                "3f621966e096fd45"
+            ]
+        ]
+    },
+    {
+        "id": "7830e48ae896cb4c",
+        "type": "ui_switch",
+        "z": "eeef58bbbdff6c8e",
+        "name": "",
+        "label": "Otwórz łapę",
+        "tooltip": "",
+        "group": "872ad4cc77976ba2",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1190,
+        "y": 120,
+        "wires": [
+            [
+                "2bcb957b68b5c30e"
+            ]
+        ]
+    },
+    {
+        "id": "2bcb957b68b5c30e",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "Zamień switch w return value w json",
+        "func": "// Read the slider value\nlet sliderValue = msg.payload;\nlet val = -1;\nif(sliderValue == false){\n    val = 2;\n}\nelse{\n    val = 1;\n}\n\n// Build your JSON object\nlet output = {\n    GripperRequest: val,\n    VerticalMovementRequest: -1,\n    HorizontalMovementRequest: -1,\n    RotationRequest: -1,\n    Reset: false,\n};\n\n// Return it as the new payload\nmsg.payload = output;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1450,
+        "y": 120,
+        "wires": [
+            [
+                "d7bf6e1de69c51a4"
+            ]
+        ]
+    },
+    {
+        "id": "dc0ae6ab8ba7fae2",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "Wybierz element json'a, którym modyfikujesz guzik",
+        "func": "let data = msg.payload;\nmsg.payload = data.GripperRequest;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 120,
+        "wires": [
+            [
+                "7830e48ae896cb4c"
+            ]
+        ]
+    },
+    {
+        "id": "2d06fc81a8f3fb02",
+        "type": "ui_button",
+        "z": "eeef58bbbdff6c8e",
+        "name": "",
+        "group": "872ad4cc77976ba2",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Reset do początkowej pozycji",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"GripperRequest\":1,\"VerticalMovementRequest\":0,\"HorizontalMovementRequest\":0,\"RotationRequest\":0,\"Reset\":true}",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 490,
+        "y": 400,
+        "wires": [
+            [
+                "c1e75a91b5b8b769",
+                "2a701652c3c273aa",
+                "2ff8af909f83d870",
+                "8e1f5b4945077ace",
+                "dc0ae6ab8ba7fae2"
+            ]
+        ]
+    },
+    {
+        "id": "d7bf6e1de69c51a4",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "zmień json'a w nazwę text box'a",
+        "func": "var msg_json = msg.payload;\nnode.warn(msg_json);\n\nif(msg_json[\"GripperRequest\"] != false){\n    if(msg_json[\"GripperRequest\"] == 1){\n        msg.payload = \"Otwórz łapę\";\n        return msg;\n    }\n    else if (msg_json[\"GripperRequest\"] == 2) {\n        msg.payload = \"Zamknij łapę\";\n        return msg;\n    }\n\n}\nif(msg_json[\"VerticalMovementRequest\"] != -1){\n    msg.payload = \"Ruch w pionie o \" + msg_json[\"VerticalMovementRequest\"].toString();\n    return msg\n}\nif(msg_json[\"HorizontalMovementRequest\"] != -1){\n    msg.payload = \"Ruch w poziomie o \" + msg_json[\"HorizontalMovementRequest\"].toString();\n    return msg\n}\nif(msg_json[\"RotationRequest\"] != -1){\n    msg.payload = \"Obrót o \" + msg_json[\"RotationRequest\"].toString();\n    return msg\n}\nif(msg_json[\"Reset\"] != false){\n    msg.payload = \"Zresetuj do początkowej pozycji\";\n    return msg;\n}   \n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1790,
+        "y": 360,
+        "wires": [
+            [
+                "387bb99acf3bc189"
+            ]
+        ]
+    },
+    {
+        "id": "387bb99acf3bc189",
+        "type": "ui_template",
+        "z": "eeef58bbbdff6c8e",
+        "group": "27d2d1f8eff79d21",
+        "name": "Historia",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\n    #history_wrapper {\n        position: relative;\n        border: 1px solid #ccc;\n        padding: 5px;\n        height: 350px;\n        overflow-y: auto;\n    }\n\n    .draggable {\n        display: flex;\n        align-items: center;\n        margin-bottom: 5px;\n        padding: 2px;\n        border: 1px solid #ddd;\n        cursor: move;\n        background-color: white;\n    }\n\n    .dragging {\n        opacity: 0.5;\n        background-color: #f0f0f0;\n    }\n\n    .placeholder {\n        height: 2px;\n        background-color: blue;\n        margin: 2px 0;\n    }\n\n    #send_debug_btn {\n        margin-bottom: 5px;\n        padding: 3px 6px;\n        font-size: 12px;\n    }\n</style>\n\n<!-- Send button OUTSIDE the scrollable container -->\n<button id=\"send_debug_btn\">Wykonaj komendy</button>\n\n<div id=\"history_wrapper\">\n    <div ng-repeat=\"entry in history track by $index\" class=\"draggable\" draggable=\"true\"\n        ng-attr-data-index=\"{{$index}}\">\n        <div style=\"flex-grow:1;\">{{entry}}</div>\n        <button ng-click=\"deleteEntry($index)\" style=\"margin-left:10px;\">Delete</button>\n    </div>\n</div>\n\n<script>\n    (function(scope){\n\n    if (!scope.history) scope.history = [];\n\n    scope.$watch('msg', function(msg){\n        if(!msg || !msg.payload) return;\n\n        if (msg.topic === \"send_history\") return;\n\n        scope.history.push(msg.payload);\n    });\n\n    scope.deleteEntry = function(index){\n        scope.history.splice(index,1);\n    };\n\n    let dragSrcIndex = null;\n    let placeholder = document.createElement('div');\n    placeholder.className = 'placeholder';\n\n    function addDragEvents() {\n        const container = document.getElementById('history_wrapper');\n        const items = container.querySelectorAll('.draggable');\n\n        items.forEach(item => {\n            item.addEventListener('dragstart', (e) => {\n                dragSrcIndex = parseInt(item.getAttribute('data-index'));\n                item.classList.add('dragging');\n            });\n\n            item.addEventListener('dragend', (e) => {\n                item.classList.remove('dragging');\n                if(placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);\n            });\n\n            item.addEventListener('dragover', (e) => {\n                e.preventDefault();\n                const rect = item.getBoundingClientRect();\n                const offset = e.clientY - rect.top;\n\n                if(offset < rect.height/2){\n                    container.insertBefore(placeholder, item);\n                } else {\n                    container.insertBefore(placeholder, item.nextSibling);\n                }\n            });\n\n            item.addEventListener('drop', (e) => {\n                e.preventDefault();\n                const dropIndex = Array.from(container.children).indexOf(placeholder);\n                if(dropIndex === -1 || dragSrcIndex === null) return;\n\n                if(placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);\n\n                const moved = scope.history.splice(dragSrcIndex,1)[0];\n                scope.history.splice(dropIndex,0,moved);\n                scope.$apply();\n            });\n        });\n    }\n\n    scope.$watch('history.length', function(){\n        setTimeout(addDragEvents, 0);\n    });\n\n    // Send to Debug button\n    document.getElementById('send_debug_btn').addEventListener('click', function(){\n        scope.send({\n        payload: scope.history,\n        topic: \"send_history\"\n        });\n\n        scope.history = [];\n        scope.$apply();\n    });\n\n})(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1780,
+        "y": 420,
+        "wires": [
+            [
+                "6bf6584f0468a3aa"
+            ]
+        ]
+    },
+    {
+        "id": "6bf6584f0468a3aa",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "Zamień switch w return value w json",
+        "func": "// Only react to the \"Send to Debug\" button\nif (msg.topic !== \"send_history\") {\n    return null;\n}\n\n// Ensure payload is an array of strings\nlet arr = Array.isArray(msg.payload) ? msg.payload : [msg.payload];\n\nmsg.payload = arr.map(entry => {\n\n    // Defaults\n    let GripperRequest = -1;\n    let VerticalMovementRequest = -1;\n    let HorizontalMovementRequest = -1;\n    let RotationRequest = -1;\n    let Reset = false;\n\n    if (entry === \"Otwórz łapę\") {\n        GripperRequest = 1;\n    }\n    else if (entry === \"Zamknij łapę\") {\n        GripperRequest = 2;\n    }\n    else if (entry.startsWith(\"Ruch w pionie o\")) {\n        const match = entry.match(/Ruch w pionie o\\s+(-?\\d+)/);\n        if (match) {\n            VerticalMovementRequest = parseInt(match[1], 10);\n        }\n    }\n    else if (entry.startsWith(\"Ruch w poziomie o\")) {\n        const match = entry.match(/Ruch w poziomie o\\s+(-?\\d+)/);\n        if (match) {\n            HorizontalMovementRequest = parseInt(match[1], 10);\n        }\n    }\n    else if (entry.startsWith(\"Obrót o\")) {\n        const match = entry.match(/Obrót o\\s+(-?\\d+)/);\n        if (match) {\n            RotationRequest = parseInt(match[1], 10);\n        }\n    }\n    else if (entry === \"Zresetuj do początkowej pozycji\") {\n        Reset = true;\n    }\n\n    return {\n        GripperRequest,\n        VerticalMovementRequest,\n        HorizontalMovementRequest,\n        RotationRequest,\n        Reset,\n    };\n});\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1790,
+        "y": 480,
+        "wires": [
+            [
+                "89e9d1c4e1d30980"
+            ]
+        ]
+    },
+    {
+        "id": "89e9d1c4e1d30980",
+        "type": "mqtt out",
+        "z": "eeef58bbbdff6c8e",
+        "name": "Wyślij json'a do pythona",
+        "topic": "test",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "af1ec4295b7cd019",
+        "x": 1790,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "c1e75a91b5b8b769",
+        "type": "function",
+        "z": "eeef58bbbdff6c8e",
+        "name": "zamień slider return value w json",
+        "func": "// Read the slider value\nlet sliderValue = msg.payload;\n\n// Build your JSON object\nlet output = {\n    GripperRequest: false,\n    VerticalMovementRequest: -1,\n    HorizontalMovementRequest: -1,\n    RotationRequest: -1,\n    Reset: true,\n};\n\n// Return it as the new payload\nmsg.payload = output;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 400,
+        "wires": [
+            [
+                "d7bf6e1de69c51a4"
+            ]
+        ]
+    },
+    {
+        "id": "872ad4cc77976ba2",
+        "type": "ui_group",
+        "name": "Historia",
+        "tab": "e3e7aa455dfe08ac",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "af1ec4295b7cd019",
+        "type": "mqtt-broker",
+        "name": "Local broker",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "27d2d1f8eff79d21",
+        "type": "ui_group",
+        "name": "Test",
+        "tab": "e3e7aa455dfe08ac",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e3e7aa455dfe08ac",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
