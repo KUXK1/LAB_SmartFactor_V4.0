@@ -1,0 +1,314 @@
+[
+    {
+        "id": "d9edceb0338d638e",
+        "type": "tab",
+        "label": "Menu Punch Robot v4",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "584b1857c4325045",
+        "type": "ui_button",
+        "z": "d9edceb0338d638e",
+        "name": "",
+        "group": "9d2d0368fcf9fef4",
+        "order": 1,
+        "width": "",
+        "height": "",
+        "passthru": false,
+        "label": "PARK",
+        "tooltip": "",
+        "color": "white",
+        "bgcolor": "red",
+        "className": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "str",
+        "topic": "ft/machine/park",
+        "topicType": "str",
+        "x": 210,
+        "y": 80,
+        "wires": [
+            [
+                "be764c50cfd4ee7f"
+            ]
+        ]
+    },
+    {
+        "id": "fb71d49264588227",
+        "type": "ui_button",
+        "z": "d9edceb0338d638e",
+        "group": "9d2d0368fcf9fef4",
+        "order": 2,
+        "label": "Punch +",
+        "payload": "1",
+        "payloadType": "str",
+        "topic": "ft/machine/punch/increase",
+        "x": 200,
+        "y": 280,
+        "wires": [
+            [
+                "be764c50cfd4ee7f"
+            ]
+        ]
+    },
+    {
+        "id": "140fc81603a7d582",
+        "type": "ui_button",
+        "z": "d9edceb0338d638e",
+        "group": "9d2d0368fcf9fef4",
+        "order": 3,
+        "label": "Punch −",
+        "payload": "1",
+        "payloadType": "str",
+        "topic": "ft/machine/punch/decrease",
+        "x": 200,
+        "y": 240,
+        "wires": [
+            [
+                "be764c50cfd4ee7f"
+            ]
+        ]
+    },
+    {
+        "id": "fdf8a1e2714ce6f9",
+        "type": "ui_button",
+        "z": "d9edceb0338d638e",
+        "group": "9d2d0368fcf9fef4",
+        "order": 4,
+        "label": "Tryb LISTA",
+        "payload": "ON",
+        "payloadType": "str",
+        "topic": "ft/machine/lista/mode",
+        "x": 210,
+        "y": 200,
+        "wires": [
+            [
+                "be764c50cfd4ee7f"
+            ]
+        ]
+    },
+    {
+        "id": "3686c705570d39bc",
+        "type": "ui_button",
+        "z": "d9edceb0338d638e",
+        "group": "9d2d0368fcf9fef4",
+        "order": 5,
+        "label": "Dodaj do listy",
+        "payload": "1",
+        "payloadType": "str",
+        "topic": "ft/machine/lista/add",
+        "x": 220,
+        "y": 160,
+        "wires": [
+            [
+                "be764c50cfd4ee7f"
+            ]
+        ]
+    },
+    {
+        "id": "e8004a123e7ade7c",
+        "type": "ui_button",
+        "z": "d9edceb0338d638e",
+        "group": "9d2d0368fcf9fef4",
+        "order": 6,
+        "label": "Wyczyść listę",
+        "payload": "1",
+        "payloadType": "str",
+        "topic": "ft/machine/lista/clear",
+        "x": 220,
+        "y": 120,
+        "wires": [
+            [
+                "be764c50cfd4ee7f"
+            ]
+        ]
+    },
+    {
+        "id": "66db0c32587dfafc",
+        "type": "ui_text",
+        "z": "d9edceb0338d638e",
+        "group": "0779671f2d4af3ac",
+        "order": 1,
+        "label": "Czujnik wejścia",
+        "format": "{{msg.payload}}",
+        "x": 460,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "0e3f2b04a47825ef",
+        "type": "ui_text",
+        "z": "d9edceb0338d638e",
+        "group": "0779671f2d4af3ac",
+        "order": 2,
+        "label": "Czujnik wyjścia",
+        "format": "{{msg.payload}}",
+        "x": 460,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "658d822d525040ec",
+        "type": "ui_text",
+        "z": "d9edceb0338d638e",
+        "group": "0779671f2d4af3ac",
+        "order": 3,
+        "label": "Punch count",
+        "format": "{{msg.payload}}",
+        "x": 470,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "f20a2f3a20a71f44",
+        "type": "ui_text",
+        "z": "d9edceb0338d638e",
+        "group": "0779671f2d4af3ac",
+        "order": 4,
+        "label": "Tryb listy",
+        "format": "{{msg.payload}}",
+        "x": 480,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "c5274a7d95e0cf13",
+        "type": "ui_text",
+        "z": "d9edceb0338d638e",
+        "group": "0779671f2d4af3ac",
+        "order": 5,
+        "label": "Zadań w kolejce",
+        "format": "{{msg.payload}}",
+        "x": 460,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "0ce4c297a18409e8",
+        "type": "mqtt in",
+        "z": "d9edceb0338d638e",
+        "topic": "ft/machine/status/sensor_in",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "66db0c32587dfafc"
+            ]
+        ]
+    },
+    {
+        "id": "0a4bbe58779beef3",
+        "type": "mqtt in",
+        "z": "d9edceb0338d638e",
+        "topic": "ft/machine/status/sensor_out",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 140,
+        "y": 460,
+        "wires": [
+            [
+                "0e3f2b04a47825ef"
+            ]
+        ]
+    },
+    {
+        "id": "29f72efafdce574c",
+        "type": "mqtt in",
+        "z": "d9edceb0338d638e",
+        "topic": "ft/machine/status/punch_current",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 150,
+        "y": 420,
+        "wires": [
+            [
+                "658d822d525040ec"
+            ]
+        ]
+    },
+    {
+        "id": "c2f23e479950de4f",
+        "type": "mqtt in",
+        "z": "d9edceb0338d638e",
+        "topic": "ft/machine/status/lista_mode",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 140,
+        "y": 380,
+        "wires": [
+            [
+                "f20a2f3a20a71f44"
+            ]
+        ]
+    },
+    {
+        "id": "67ad1c5cccdca5f9",
+        "type": "mqtt in",
+        "z": "d9edceb0338d638e",
+        "topic": "ft/machine/status/lista_len",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 130,
+        "y": 340,
+        "wires": [
+            [
+                "c5274a7d95e0cf13"
+            ]
+        ]
+    },
+    {
+        "id": "be764c50cfd4ee7f",
+        "type": "mqtt out",
+        "z": "d9edceb0338d638e",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_broker",
+        "x": 710,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "9d2d0368fcf9fef4",
+        "type": "ui_group",
+        "name": "Sterowanie",
+        "tab": "3828b125810cf291",
+        "order": 1,
+        "width": 6
+    },
+    {
+        "id": "0779671f2d4af3ac",
+        "type": "ui_group",
+        "name": "Status maszyny",
+        "tab": "3828b125810cf291",
+        "order": 2,
+        "width": 6
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "Local MQTT",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "protocolVersion": "4"
+    },
+    {
+        "id": "3828b125810cf291",
+        "type": "ui_tab",
+        "name": "FT Stanowisko",
+        "icon": "dashboard",
+        "order": 1
+    }
+]
